@@ -24,9 +24,8 @@ const AddEmployee = () => {
     if (!formData.name) errs.name = 'Name is required';
     if (!formData.employeeId) errs.employeeId = 'Employee ID is required';
     if (!/^[a-zA-Z0-9]{1,10}$/.test(formData.employeeId)) errs.employeeId = 'Invalid Employee ID';
-    if (!/\S+@\S+\.\S+/.test(formData.email)) errs.email = 'Invalid email';
-    if (!/^\d{10}$/.test(formData.phone)) errs.phone = 'Invalid phone number';
-    if (!formData.department) errs.department = 'Department is required';
+    
+    
     if (!formData.joiningDate) errs.joiningDate = 'Joining date is required';
     if (new Date(formData.joiningDate) > new Date()) errs.joiningDate = 'Date cannot be in the future';
     if (!formData.role) errs.role = 'Role is required';

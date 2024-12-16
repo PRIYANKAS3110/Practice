@@ -1,15 +1,21 @@
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+import mysql from 'mysql2';
 
-// Load environment variables from the .env file
-dotenv.config();
+// Create a connection pool
+let pool: mysql.Pool | null = null;
 
-// Create a MySQL connection pool using environment variables
-const db = mysql.createPool({
-  host: process.env.DB_HOST,          // Get from .env
-  user: process.env.DB_USER,          // Get from .env
-  password: process.env.DB_PASSWORD,  // Get from .env
-  database: process.env.DB_NAME,      // Get from .env
-});
+const getDbConnection = (): mysql.Pool => {
+  if (!pool) {
+    pool = mysql.createPool({
+      uri: process.env.DATABASE_URL, // If using a single URL for connection (e.g., Railway)
+      // Alternatively, use the individual configurations:
+      // host: 'localhost',
+      // user: 'root',
+      // password: 'password',
+      // database: 'your_database_name',
+    });
+  }
+  
+  return pool;
+};
 
-export default db;
+export default getDbConnection;

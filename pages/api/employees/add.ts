@@ -6,24 +6,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { name, employeeId, email, phone, department, joiningDate, role } = req.body;
 
     try {
-      const db = getDbConnection(); // Get the actual Pool object
-
-      // Check for duplicate Employee ID or Email
+      const db = getDbConnection(); 
       db.query(
         'SELECT * FROM employees WHERE employeeId = ? OR email = ?',
         [employeeId, email],
-        (err, result: any[]) => {  // Explicitly type result as an array of any (you can define a more specific type for better typing)
+        (err, result: any[]) => { 
           if (err) {
             console.error('Database Error:', err.message, err.stack);
             return res.status(500).json({ error: 'Database error', details: err.message });
           }
-
-          // If result[0] exists, it means the query returned a matching record
           if (result && result.length > 0) {
             return res.status(400).json({ error: 'Employee ID or Email already exists' });
           }
-
-          // Insert new employee
           db.query(
             'INSERT INTO employees (name, employeeId, email, phone, department, joiningDate, role) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [name, employeeId, email, phone, department, joiningDate, role],
